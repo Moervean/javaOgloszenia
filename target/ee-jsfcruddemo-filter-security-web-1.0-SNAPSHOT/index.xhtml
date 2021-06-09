@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+</h:head>
+<h:body>
+    <ui:composition template="/WEB-INF/templates/template.xhtml">
+
+        <ui:define name="toolbar">
+            <ui:include src="/WEB-INF/include/login_bar.xhtml"></ui:include>
+            <p:panel header="Zasoby" toggleable="true" style="margin-top:10px; margin-bottom: 10px;">
+                <p:link value="Strona dostępna tylko dla zalogowanych użytkowników" outcome="/restricted/restricted.xhtml" />
+            </p:panel>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="mainForm">
+                <p:growl id="growl" showDetail="true" showSummary="false"  keepAlive=""   />
+                <p:dataTable id="clientTable" value="#{adController.ads}" var="ad"  rowKey="#{1}"
+                             emptyMessage="Brak ogłoszeń, dodaj ogłszenie"
+                             paginator="true"
+                             paginatorAlwaysVisible = "false"
+                             paginatorPosition="bottom"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                             rows="10"
+                             rowsPerPageTemplate="10" >
+                    <f:facet name="header">
+                        Klienci
+                    </f:facet>
+                    <p:column headerText="Tytuł" >
+                        #{ad.title}
+                    </p:column>
+                    <p:column headerText="Opis">
+                        #{ad.content}
+                    </p:column>
+                    <p:column headerText="Edytuj" width="80" style="text-align: center;">
+                        <p:commandButton icon="fa fa-fw fa-edit"  title="Edytuj" action="#{adController.onEditAd(ad)}" disabled="#{!userBean.logged}" process="@this" update=":adDlg" oncomplete="PF('adDlg').show()" />
+                    </p:column>
+                    <p:column headerText="Usuń" width="80" style="text-align: center;">
+                        <p:commandButton icon="fa fa-fw fa-remove" title="Usuń" action="#{adController.onRemoveAd(ad)}" disabled="#{!userBean.logged}" process="@this" update=":mainForm:clientTable" >
+                            <p:confirm message="Czy chcesz usunąć klienta i jego konta ?" icon="pi pi-exclamation-triangle" />
+                        </p:commandButton>
+                    </p:column>
+                    <f:facet name="footer">
+                        <div style="text-align: left">
+                            <p:commandButton icon="fa fa-fw fa-plus" title="Dodaj konto"  rendered="#{userBean.logged}" action="#{adController.onAddAd()}" process="@this" update=":adDlg" oncomplete="PF('adDlg').show()" />
+                        </div>
+                    </f:facet>
+                </p:dataTable>
+            </h:form>
+            <p:dialog id="adDlg" widgetVar="adDlg" dynamic="true" modal="true" header="Dane klienta"  showEffect="fade" hideEffect="fade">
+                <h:form id="adDlgForm" >
+
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="Imię" for="@next"/>
+                        <p:inputText id="firstName" value="#{adController.editedAd.title}" required="true" />
+                        <p:outputLabel value="Nazwisko" for="@next"/>
+                        <p:inputText id="lastName" value="#{adController.editedAd.content}" required="true" />
+                    </h:panelGrid>
+
+                    <p:commandButton value="Zapisz" action="#{adController.onSaveAd()}" process="@form" update=":mainForm" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('adDlg').hide()"  />
+                    <p:commandButton  value="Anuluj" action="#{adController.onCancelAd()}" process="@this" update=":mainForm:growl" oncomplete="PF('adDlg').hide()"  >
+                        <p:resetInput target=":adDlgForm"/>
+                    </p:commandButton>
+                </h:form>
+            </p:dialog>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" header="Potwierdzenie" >
+                <p:commandButton value="Tak" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                <p:commandButton value="Nie" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+            </p:confirmDialog>
+        </ui:define>
+
+    </ui:composition>
+</h:body>
+</html>
