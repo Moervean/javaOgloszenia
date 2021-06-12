@@ -35,7 +35,11 @@
                         #{ad.user.login}
                     </p:column>
                     <p:column headerText="Tytuł" >
-                        #{ad.title}
+                        <p:link value="#{ad.title}" outcome="/ad/singleAd" >
+                            <f:param name = "title" value = "#{ad.title}"/>
+                            <f:param name = "content" value = "#{ad.content}"/>
+                        </p:link>
+
                     </p:column>
                     <p:column headerText="Opis">
                         #{ad.content}
