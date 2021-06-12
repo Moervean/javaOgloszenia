@@ -23,7 +23,9 @@ public class BlackWordController implements Serializable {
 
     @PostConstruct
     private void init(){
-        blackWords = new ArrayList<>();
+        blackWords = blackWordService.findAll();
+        if(blackWords == null)
+            blackWords = new ArrayList<>();
     }
 
     public void setBlackWords(List<BlackWord> blackWords) {
