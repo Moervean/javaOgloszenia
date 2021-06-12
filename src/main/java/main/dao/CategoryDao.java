@@ -1,4 +1,6 @@
 package main.dao;
 
-public interface CategoryDao {
+import main.model.Category;
+
+public interface CategoryDao extends AbstractDao<Category> {
 }

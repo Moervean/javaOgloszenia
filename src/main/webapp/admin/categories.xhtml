@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 <h:head>
 </h:head>
@@ -18,8 +19,74 @@
         </ui:define>
 
         <ui:define name="content">
+            <h:form id="mainForm">
+                <p:growl id="growl" showDetail="true" showSummary="false"  keepAlive=""   />
+                <p:dataTable id="clientTable" value="#{categoriesController.categories}" var="category"  rowKey="#{1}"
+                             emptyMessage="Brak kategorii"
+                             paginator="true"
+                             paginatorAlwaysVisible = "false"
+                             paginatorPosition="bottom"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                             rows="10"
+                             rowsPerPageTemplate="10" >
+                    <f:facet name="header">
+                        Kategorie
+                    </f:facet>
+                    <p:column headerText="Nazwa" >
+                        #{category.name}
+                    </p:column>
+                    <p:column headerText="Edytuj" width="80" style="text-align: center;">
+                        <p:commandButton icon="fa fa-fw fa-edit"
+                                         title="Edytuj"
+                                         action="#{categoriesController.onEditCategory(category)}"
+                                         process="@this"
+                                         update=":catDlg"
+                                         oncomplete="PF('catDlg').show()" />
+                    </p:column>
+                    <p:column headerText="Usuń" width="80" style="text-align: center;">
+                        <p:commandButton icon="fa fa-fw fa-remove"
+                                         title="Usuń" action="#{categoriesController.onRemoveCategory(category)}"
+                                         process="@this" update=":mainForm:clientTable" >
+                            <p:confirm message="Czy chcesz usunąć kategorię?" icon="pi pi-exclamation-triangle" />
+                        </p:commandButton>
+                    </p:column>
+                    <f:facet name="footer">
+                        <div style="text-align: left">
+                            <p:commandButton icon="fa fa-fw fa-plus"
+                                             title="Dodaj kategorię"
+                                             action="#{categoriesController.onAddCategory()}"
+                                             process="@this"
+                                             update=":catDlg"
+                                             oncomplete="PF('catDlg').show()" />
+                        </div>
+                    </f:facet>
+                </p:dataTable>
+            </h:form>
+            <p:dialog id="catDlg"
+                      widgetVar="catDlg"
+                      dynamic="true"
+                      modal="true"
+                      header="Nowa kategoria"
+                      showEffect="fade"
+                      hideEffect="fade">
+                <h:form id="catDlgForm" >
 
-            <h1>Kategorie</h1>
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="Nazwa" for="@next"/>
+                        <p:inputText id="name" value="#{categoriesController.editedCategory.name}" required="true" />
+                    </h:panelGrid>
+
+                    <p:commandButton value="Zapisz" action="#{categoriesController.onSaveCategory()}" process="@form" update=":mainForm" oncomplete="PF('catDlg').hide()"  />
+                    <p:commandButton  value="Anuluj" action="#{categoriesController.onCancelCategory()}" process="@this" update=":mainForm:growl" oncomplete="PF('catDlg').hide()"  >
+                        <p:resetInput target=":adDlgForm"/>
+                    </p:commandButton>
+                </h:form>
+            </p:dialog>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" header="Potwierdzenie" >
+                <p:commandButton value="Tak" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                <p:commandButton value="Nie" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+            </p:confirmDialog>
 
         </ui:define>
     </ui:composition>

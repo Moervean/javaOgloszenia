@@ -1,4 +1,10 @@
 package main.dao;
 
-public class CategoryDaoImpl {
+
+import main.model.Category;
+
+import javax.ejb.Stateless;
+
+@Stateless
+public class CategoryDaoImpl extends AbstractDaoJpaImpl<Category> implements CategoryDao {
 }

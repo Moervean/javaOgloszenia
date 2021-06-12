@@ -5,6 +5,7 @@
       <map>
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/include/admin_menu.xhtml" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/include" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/include/login_bar.xhtml" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/include" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/admin/categories.xhtml" value="file://$PROJECT_DIR$/src/main/webapp/admin" />
       </map>
     </option>
   </component>
