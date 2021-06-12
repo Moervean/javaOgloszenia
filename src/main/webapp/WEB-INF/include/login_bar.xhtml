@@ -43,6 +43,11 @@
                     <p:outputPanel rendered="#{userBean.logged}">
                         <h:outputText value="Jesteś zalogowany jako: #{userBean.login}"
                                       style="margin: 0.2em;"/>
+                        <p:commandButton value="Panel admina"
+                                         icon="pi pi-fw pi-lock"
+                                         outcome="/admin/"
+                                         style="margin: 0.2em;"
+                                         styleClass="ui-button-info"/>
                         <p:commandButton value="Wyloguj"
                                          icon="pi pi-fw pi-sign-out"
                                          action="#{loginController.onLogout}"
