@@ -1,4 +1,9 @@
 package main.dao;
 
-public class BlackWordDaoImpl {
+import main.model.BlackWord;
+
+import javax.ejb.Stateless;
+
+@Stateless
+public class BlackWordDaoImpl extends AbstractDaoJpaImpl<BlackWord> implements BlackWordDao {
 }

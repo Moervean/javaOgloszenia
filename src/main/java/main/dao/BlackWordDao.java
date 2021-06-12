@@ -1,4 +1,7 @@
 package main.dao;
 
-public interface BlackWordDao {
+import main.model.Ad;
+import main.model.BlackWord;
+
+public interface BlackWordDao extends AbstractDao<BlackWord> {
 }
