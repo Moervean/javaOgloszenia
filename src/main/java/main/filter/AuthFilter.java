@@ -1,6 +1,7 @@
 package main.filter;
 
 import main.bean.UserBean;
+import main.util.JSF;
 
 import javax.inject.Inject;
 import javax.servlet.*;
@@ -24,6 +25,18 @@ public class AuthFilter implements Filter {
             if (!userBean.isLogged()) {
                 HttpServletResponse response = (HttpServletResponse) servletResponse;
                 response.sendRedirect(request.getContextPath()+"/login.xhtml");
+                return;
+            }
+        }
+        if(path.startsWith("/admin/")){
+            if (!userBean.isLogged()) {
+                HttpServletResponse response = (HttpServletResponse) servletResponse;
+                response.sendRedirect(request.getContextPath()+"/login.xhtml");
+                return;
+            }
+            if(!userBean.isAdmin()){
+                HttpServletResponse response = (HttpServletResponse) servletResponse;
+                response.sendRedirect(request.getContextPath()+"/index.xhtml");
                 return;
             }
         }
