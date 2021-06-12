@@ -1,6 +1,7 @@
 package main.dao;
 
 import main.model.AbstractModel;
+import main.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -82,6 +83,10 @@ public class AbstractDaoJpaImpl<T extends AbstractModel> implements AbstractDao<
         } catch (NoResultException nre) {
             return Optional.empty();
         }
+    }
+
+    public void registerUser( User u){
+
     }
 
 }

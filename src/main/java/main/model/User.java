@@ -31,11 +31,11 @@ public class User extends AbstractModel {
     public User() {
     }
 
-    public User(Long id, String login, String password, String email) {
-        super(id);
+    public User(String login, String password, String email) {
         this.login = login;
         this.password = password;
         this.email = email;
+        userRank = UserRank.USER;
     }
 
     public String getLogin() {

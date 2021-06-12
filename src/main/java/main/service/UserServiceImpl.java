@@ -23,4 +23,9 @@ public class UserServiceImpl implements UserService {
         return u != null ? password.equals(u.getPassword()) : false;
 
     }
+
+    @Override
+    public void addUser(String login, String password, String email) {
+        userDao.save(new User(login,password,email));
+    }
 }
