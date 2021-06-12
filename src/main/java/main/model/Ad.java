@@ -2,6 +2,9 @@ package main.model;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+@NamedQuery(name="Ad.findInactiveAds",query = "select u from Ad u where u.isAccepted=false ")
+@NamedQuery(name="Ad.findActiveAds",query = "select u from Ad u where u.isAccepted=true")
 @Entity
 public class Ad extends AbstractModel{
     @ManyToOne
@@ -11,6 +14,16 @@ public class Ad extends AbstractModel{
     private Category category;
 
     private String title;
+
+    private boolean isAccepted;
+
+    public boolean getIsAccepted() {
+        return isAccepted;
+    }
+
+    public void setIsAccepted(boolean isAccepted) {
+        this.isAccepted = isAccepted;
+    }
 
     public User getUser() {
         return user;

@@ -1,4 +1,4 @@
-package main.controller;
+package main.controller.admin;
 
 import main.model.Ad;
 import main.service.AdService;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @Named
 @ViewScoped
-public class AdController implements Serializable {
+public class AdminAdController implements Serializable {
 
     @EJB
     private AdService adService;
@@ -22,10 +22,11 @@ public class AdController implements Serializable {
 
     @PostConstruct
     private void init(){
-        ads = adService.findActiveAds();
+        ads = adService.findInactiveAds();
         if(ads == null)
             ads = new ArrayList<>();
     }
+
     public AdService getAdService() {
         return adService;
     }

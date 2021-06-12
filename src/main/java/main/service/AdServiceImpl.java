@@ -30,4 +30,14 @@ public class AdServiceImpl implements  AdService{
     public List<Ad> findAll() {
         return adDao.findAll();
     }
+
+    @Override
+    public List<Ad> findActiveAds() {
+        return adDao.findActiveAds();
+    }
+
+    @Override
+    public List<Ad> findInactiveAds() {
+        return adDao.findInactiveAds();
+    }
 }

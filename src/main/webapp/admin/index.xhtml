@@ -2,6 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui">
 <h:head>
@@ -22,6 +23,66 @@
             <h1>Admin panel</h1>
 
         </ui:define>
+
+        <ui:define name="content">
+            <h:form id="mainForm">
+                <p:growl id="growl" showDetail="true" showSummary="false"  keepAlive=""   />
+                <p:dataTable id="clientTable" value="#{adminAdController.ads}" var="ad"  rowKey="#{1}"
+                             emptyMessage="Brak ogłoszeń, dodaj ogłszenie"
+                             paginator="true"
+                             paginatorAlwaysVisible = "false"
+                             paginatorPosition="bottom"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                             rows="10"
+                             rowsPerPageTemplate="10" >
+                    <f:facet name="header">
+                        Ogłoszenia
+                    </f:facet>
+                    <p:column headerText="Tytuł" >
+                        #{ad.title}
+                    </p:column>
+                    <p:column headerText="Opis">
+                        #{ad.content}
+                    </p:column>
+                    <p:column headerText="Status">
+                        #{ad.isAccepted}
+                    </p:column>
+                    <p:column headerText="Edytuj" width="80" style="text-align: center;">
+                        <p:commandButton icon="fa fa-fw fa-edit"  title="Edytuj" action="#{adminAdController.onEditAd(ad)}" disabled="#{!userBean.logged}" process="@this" update=":adDlg" oncomplete="PF('adDlg').show()" />
+                    </p:column>
+                    <p:column headerText="Usuń" width="80" style="text-align: center;">
+                        <p:commandButton icon="fa fa-fw fa-remove" title="Usuń" action="#{adminAdController.onRemoveAd(ad)}" disabled="#{!userBean.logged}" process="@this" update=":mainForm:clientTable" >
+                            <p:confirm message="Czy chcesz usunąć ogłosenia ?" icon="pi pi-exclamation-triangle" />
+                        </p:commandButton>
+                    </p:column>
+
+                </p:dataTable>
+            </h:form>
+            <p:dialog id="adDlg" widgetVar="adDlg" dynamic="true" modal="true" header="Nowe ogłoszenie"  showEffect="fade" hideEffect="fade">
+                <h:form id="adDlgForm" >
+
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="Tytuł" for="@next"/>
+                        <p:inputText id="firstName" value="#{adminAdController.editedAd.title}" required="true" />
+                        <p:outputLabel value="Opis" for="@next"/>
+                        <p:inputText id="lastName" value="#{adminAdController.editedAd.content}" required="true" />
+                        <p:outputLabel value="Status" for="@next"/>
+                        <p:inputSwitch id="state" value="#{adminAdController.editedAd.isAccepted}"/>
+                    </h:panelGrid>
+
+                    <p:commandButton value="Zapisz" action="#{adminAdController.onSaveAd()}" process="@form" update=":mainForm" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('adDlg').hide()"  />
+                    <p:commandButton  value="Anuluj" action="#{adminAdController.onCancelAd()}" process="@this" update=":mainForm:growl" oncomplete="PF('adDlg').hide()"  >
+                        <p:resetInput target=":adDlgForm"/>
+                    </p:commandButton>
+                </h:form>
+            </p:dialog>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" header="Potwierdzenie" >
+                <p:commandButton value="Tak" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                <p:commandButton value="Nie" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+            </p:confirmDialog>
+        </ui:define>
+
     </ui:composition>
 </h:body>
 </html>

@@ -9,4 +9,6 @@ public interface AdService {
     void delete(Long id);
     Ad findById(Long id);
     List<Ad> findAll();
+    List<Ad> findActiveAds();
+    List<Ad> findInactiveAds();
 }
