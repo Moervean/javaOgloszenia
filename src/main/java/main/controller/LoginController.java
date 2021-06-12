@@ -50,6 +50,7 @@ public class LoginController implements Serializable {
     public void onLogin() throws IOException, ServletException {
         if (userService.verify(login, password)) {
             userBean.setLogin(login);
+            userBean.setRank(userService.findByLogin(login).getUserRank());
             JSF.redirect("index.xhtml");
         } else {
             JSF.addErrorMessage("Niepoprawne dane");
