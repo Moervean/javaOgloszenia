@@ -14,7 +14,4 @@ public class UserDaoImpl extends AbstractDaoJpaImpl<User> implements UserDao {
     public Optional<User> findByLogin(String login) {
         return findSingle("User.findByLogin","login",login);
     }
-
-
-
 }
