@@ -29,18 +29,24 @@
                              rows="10"
                              rowsPerPageTemplate="10" >
                     <f:facet name="header">
-                        Klienci
+                        Ogłoszenia
                     </f:facet>
+                    <p:column headerText="Użytkownik" >
+                        #{ad.user.login}
+                    </p:column>
                     <p:column headerText="Tytuł" >
                         #{ad.title}
                     </p:column>
                     <p:column headerText="Opis">
                         #{ad.content}
                     </p:column>
-                    <p:column headerText="Edytuj" width="80" style="text-align: center;">
+                    <p:column headerText="Kategoria">
+                        #{ad.category}
+                    </p:column>
+                    <p:column headerText="Edytuj" width="80" style="text-align: center;" rendered="#{userBean.admin}">
                         <p:commandButton icon="fa fa-fw fa-edit"  title="Edytuj" action="#{adController.onEditAd(ad)}" disabled="#{!userBean.logged}" process="@this" update=":adDlg" oncomplete="PF('adDlg').show()" />
                     </p:column>
-                    <p:column headerText="Usuń" width="80" style="text-align: center;">
+                    <p:column headerText="Usuń" width="80" style="text-align: center;" rendered="#{userBean.admin}">
                         <p:commandButton icon="fa fa-fw fa-remove" title="Usuń" action="#{adController.onRemoveAd(ad)}" disabled="#{!userBean.logged}" process="@this" update=":mainForm:clientTable" >
                             <p:confirm message="Czy chcesz usunąć ogłosenia ?" icon="pi pi-exclamation-triangle" />
                         </p:commandButton>
@@ -60,9 +66,11 @@
                         <p:inputText id="firstName" value="#{adController.editedAd.title}" required="true" />
                         <p:outputLabel value="Opis" for="@next"/>
                         <p:inputText id="lastName" value="#{adController.editedAd.content}" required="true" />
+<!--                        <p:outputLabel value="Kategoria" for="@next"/>-->
+<!--                        <p:inputText id="category" value="#{adController.editedAd.category}" required="true" />-->
                     </h:panelGrid>
 
-                    <p:commandButton value="Zapisz" action="#{adController.onSaveAd()}" process="@form" update=":mainForm" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('adDlg').hide()"  />
+                    <p:commandButton value="Zapisz" action="#{adController.onSaveAd(userBean.login)}" process="@form" update=":mainForm" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('adDlg').hide()"  />
                     <p:commandButton  value="Anuluj" action="#{adController.onCancelAd()}" process="@this" update=":mainForm:growl" oncomplete="PF('adDlg').hide()"  >
                         <p:resetInput target=":adDlgForm"/>
                     </p:commandButton>
