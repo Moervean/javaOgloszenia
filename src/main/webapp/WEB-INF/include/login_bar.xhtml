@@ -8,7 +8,7 @@
 <h:head>
 </h:head>
 <h:body>
-    <div class="card">
+    <div class="card" style="margin-bottom: 1em;">
         <h:form>
             <p:growl id="messages"/>
 
@@ -51,6 +51,7 @@
                         <p:commandButton value="Panel admina"
                                          icon="pi pi-fw pi-lock"
                                          action="/admin/index.xhtml"
+                                         rendered="#{userBean.admin}"
                                          style="margin: 0.2em;"
                                          styleClass="ui-button-info"/>
                         <p:commandButton value="Wyloguj"
