@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="ee-jsfcruddemo-filter-security-web" />
+        <module name="javaOgloszenia" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="ee-jsfcruddemo-filter-security-web" target="8" />
+      <module name="javaOgloszenia" target="8" />
     </bytecodeTargetLevel>
   </component>
 </project>

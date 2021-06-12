@@ -8,19 +8,50 @@
 <h:head>
 </h:head>
 <h:body>
-    <ui:composition>
-        <p:panel header="Użytkownik" >
-            <h:form id="optionForm">
-                <p:outputPanel rendered="#{!userBean.logged}">
-                    <p:button value="Zaloguj" outcome="/login.xhtml" style="margin-right: 10px;"/>
-                    <h:outputText value="Nie jesteś zalogowany! Dane do logowania: użytkownik:test, hasło:test"/>
-                </p:outputPanel>
-                <p:outputPanel rendered="#{userBean.logged}">
-                    <p:commandButton value="Wyloguj" action="#{loginController.onLogout}" style="margin-right: 10px;"/>
-                    <h:outputText value="Jesteś zalogowany jako: #{userBean.login}"/>
-                </p:outputPanel>
-            </h:form>
-        </p:panel>
-    </ui:composition>
+    <div class="card">
+        <h:form>
+            <p:growl id="messages"/>
+
+            <p:menubar>
+                <p:submenu label="Ads" icon="pi pi-fw pi-calendar">
+                    <p:menuitem value="New" icon="pi pi-fw pi-user-plus"/>
+                    <p:submenu label="Edit" icon="pi pi-fw pi-pencil">
+                        <p:menuitem value="Save" icon="pi pi-fw pi-calendar-plus"/>
+                        <p:menuitem value="Delete" icon="pi pi-fw pi-calendar-minus"/>
+                    </p:submenu>
+                    <p:menuitem value="Delete" icon="pi pi-fw pi-user-minus"/>
+                    <p:submenu label="Archieve" icon="pi pi-fw pi-calendar-times">
+                        <p:menuitem value="Remove" icon="pi pi-fw pi-calendar-minus"/>
+                    </p:submenu>
+                </p:submenu>
+
+                <p:divider layout="vertical"/>
+
+                <f:facet name="options">
+                    <p:outputPanel rendered="#{!userBean.logged}">
+                        <h:outputText value="Nie jesteś zalogowany! Dane do logowania: użytkownik:test, hasło:test"
+                                      style="margin: 0.2em;"/>
+                        <p:button value="Zaloguj"
+                                  icon="pi pi-fw pi-sign-in"
+                                  outcome="/login.xhtml"
+                                  style="margin: 0.2em;"
+                                  styleClass="ui-button-info"/>
+                        <p:commandButton value="Zarejestruj"
+                                         style="margin: 0.2em;"
+                                         styleClass="ui-button-info"/>
+                    </p:outputPanel>
+                    <p:outputPanel rendered="#{userBean.logged}">
+                        <h:outputText value="Jesteś zalogowany jako: #{userBean.login}"
+                                      style="margin: 0.2em;"/>
+                        <p:commandButton value="Wyloguj"
+                                         icon="pi pi-fw pi-sign-out"
+                                         action="#{loginController.onLogout}"
+                                         style="margin: 0.2em;"
+                                         styleClass="ui-button-info"/>
+                    </p:outputPanel>
+                </f:facet>
+            </p:menubar>
+        </h:form>
+    </div>
 </h:body>
 </html>

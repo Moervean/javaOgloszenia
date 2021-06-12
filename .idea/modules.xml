@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ee-jsfcruddemo-filter-security-web.iml" filepath="$PROJECT_DIR$/ee-jsfcruddemo-filter-security-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/javaOgloszenia.iml" filepath="$PROJECT_DIR$/javaOgloszenia.iml" />
     </modules>
   </component>
 </project>
