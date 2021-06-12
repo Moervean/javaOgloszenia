@@ -32,4 +32,13 @@ public class UserBean implements Serializable {
     public String getLogin() {
         return login;
     }
+
+    public boolean isAdmin(){
+        return rank.equals(UserRank.ADMIN);
+    }
+
+    public boolean isMod(){
+        return rank.equals(UserRank.MOD);
+    }
+
 }

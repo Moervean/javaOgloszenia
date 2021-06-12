@@ -2,6 +2,7 @@ package main.controller;
 
 import main.model.Ad;
 import main.service.AdService;
+import main.service.UserService;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -14,6 +15,9 @@ import java.util.List;
 @Named
 @ViewScoped
 public class AdController implements Serializable {
+
+    @EJB
+    private UserService userService;
 
     @EJB
     private AdService adService;
@@ -59,7 +63,8 @@ public class AdController implements Serializable {
         editedAd = a;
     }
 
-    public void onSaveAd(){
+    public void onSaveAd(String login){
+        editedAd.setUser(userService.findByLogin(login));
         if(editedAd.getId() == null){
             ads.add(editedAd);
         }
