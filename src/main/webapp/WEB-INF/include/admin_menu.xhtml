@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+</h:head>
+<h:body>
+<h:form style="margin-top: 1em;
+               margin-right: 1em;">
+    <div class="card">
+        <p:menu>
+            <p:submenu label="Opcje">
+                <p:menuitem value="Użytkownicy" outcome="/admin/users.xhtml"/>
+                <p:menuitem value="Kategorie" outcome="/admin/categories.xhtml"/>
+                <p:menuitem value="Zakazane słowa" outcome="/admin/blacklist.xhtml"/>
+            </p:submenu>
+        </p:menu>
+    </div>
+</h:form>
+</h:body>
+</html>
+
