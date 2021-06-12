@@ -34,6 +34,9 @@ public class UserBean implements Serializable {
     }
 
     public boolean isAdmin(){
+        if(rank == null){
+            return false;
+        }
         return rank.equals(UserRank.ADMIN);
     }
 
