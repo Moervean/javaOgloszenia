@@ -10,4 +10,5 @@ import main.model.User;
 public interface UserService {
     public User findByLogin(String login);
     public boolean verify(String login, String password);
+    void addUser(String login,String password,String email);
 }

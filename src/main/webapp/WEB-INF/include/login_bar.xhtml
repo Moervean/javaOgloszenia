@@ -29,7 +29,7 @@
 
                 <f:facet name="options">
                     <p:outputPanel rendered="#{!userBean.logged}">
-                        <h:outputText value="Nie jesteś zalogowany! Dane do logowania: użytkownik:test, hasło:test"
+                        <h:outputText value="Nie jesteś zalogowany!"
                                       style="margin: 0.2em;"/>
                         <p:button value="Zaloguj"
                                   icon="pi pi-fw pi-sign-in"
@@ -37,6 +37,7 @@
                                   style="margin: 0.2em;"
                                   styleClass="ui-button-info"/>
                         <p:commandButton value="Zarejestruj"
+                                         action="/account/register.xhtml"
                                          style="margin: 0.2em;"
                                          styleClass="ui-button-info"/>
                     </p:outputPanel>
@@ -45,7 +46,7 @@
                                       style="margin: 0.2em;"/>
                         <p:commandButton value="Panel admina"
                                          icon="pi pi-fw pi-lock"
-                                         outcome="/admin/"
+                                         action="/admin/index.html"
                                          style="margin: 0.2em;"
                                          styleClass="ui-button-info"/>
                         <p:commandButton value="Wyloguj"
