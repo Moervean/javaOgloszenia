@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 <h:head>
 </h:head>
@@ -19,9 +20,89 @@
 
       <ui:define name="content">
 
-         <h1>Użytkownicy</h1>
+         <h:form id="mainForm">
+            <p:growl id="growl" showDetail="true" showSummary="false"  keepAlive=""   />
+            <p:dataTable id="clientTable" value="#{userController.users}" var="user"  rowKey="#{1}"
+                         emptyMessage="Brak"
+                         paginator="true"
+                         paginatorAlwaysVisible = "false"
+                         paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                         rows="10"
+                         rowsPerPageTemplate="10" >
+               <f:facet name="header">
+                  Użytkownicy
+               </f:facet>
+               <p:column headerText="Login" >
+                  #{user.login}
+               </p:column>
+               <p:column headerText="Email" >
+                  #{user.email}
+               </p:column>
+               <p:column headerText="Ranga" >
+                  #{user.userRank}
+               </p:column>
+               <p:column headerText="Edytuj" width="80" style="text-align: center;">
+                  <p:commandButton icon="fa fa-fw fa-edit"
+                                   title="Edytuj"
+                                   action="#{userController.onEditUser(user)}"
+                                   process="@this"
+                                   update=":userDlg"
+                                   oncomplete="PF('userDlg').show()" />
+               </p:column>
+               <p:column headerText="Usuń" width="80" style="text-align: center;">
+                  <p:commandButton icon="fa fa-fw fa-remove"
+                                   title="Usuń" action="#{userController.onRemoveUser(user)}"
+                                   process="@this" update=":mainForm:clientTable" >
+                     <p:confirm message="Czy chcesz usunąć użytkownika?" icon="pi pi-exclamation-triangle" />
+                  </p:commandButton>
+               </p:column>
+            </p:dataTable>
+         </h:form>
 
+         <p:dialog id="userDlg"
+                   widgetVar="userDlg"
+                   dynamic="true"
+                   modal="true"
+                   header="Użytkownik"
+                   showEffect="fade"
+                   hideEffect="fade">
+            <h:form id="userDlgForm" >
+
+               <h:panelGrid columns="2">
+                  <p:outputLabel value="Login" for="@next"/>
+                  <p:inputText id="login" value="#{userController.editedUser.login}" required="true" />
+
+                  <p:outputLabel value="Email" for="@next"/>
+                  <p:inputText id="email" value="#{userController.editedUser.email}" required="true" />
+
+                  <p:outputLabel value="Ranga" for="@next"/>
+                  <p:selectOneMenu id="userRank" value="#{userController.editedUser.userRank}">
+                     <f:selectItems value="#{userController.ranks}"/>
+                  </p:selectOneMenu>
+
+               </h:panelGrid>
+
+               <p:commandButton value="Zapisz"
+                                action="#{userController.onSaveUser()}"
+                                process="@form" update=":mainForm"
+                                oncomplete="PF('userDlg').hide()"  />
+               <p:commandButton  value="Anuluj"
+                                 action="#{userController.onCancelUser()}"
+                                 process="@this"
+                                 update=":mainForm:growl"
+                                 oncomplete="PF('userDlg').hide()">
+                  <p:resetInput target=":adDlgForm"/>
+               </p:commandButton>
+            </h:form>
+         </p:dialog>
+
+         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" header="Potwierdzenie" >
+            <p:commandButton value="Tak" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+            <p:commandButton value="Nie" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+         </p:confirmDialog>
       </ui:define>
+
    </ui:composition>
 </h:body>
 </html>
