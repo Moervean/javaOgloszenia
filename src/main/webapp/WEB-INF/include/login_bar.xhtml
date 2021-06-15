@@ -54,11 +54,18 @@
                                          rendered="#{userBean.admin}"
                                          style="margin: 0.2em;"
                                          styleClass="ui-button-info"/>
+                        <p:commandButton value="Panel moda"
+                                         icon="pi pi-fw pi-lock"
+                                         action="/mod/ads.xhtml"
+                                         rendered="#{userBean.isMod()}"
+                                         style="margin: 0.2em;"
+                                         styleClass="ui-button-info"/>
                         <p:commandButton value="Wyloguj"
                                          icon="pi pi-fw pi-sign-out"
                                          action="#{loginController.onLogout}"
                                          style="margin: 0.2em;"
                                          styleClass="ui-button-info"/>
+
                     </p:outputPanel>
                 </f:facet>
             </p:menubar>

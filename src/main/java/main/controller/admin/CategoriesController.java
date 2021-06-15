@@ -21,7 +21,10 @@ public class CategoriesController implements Serializable {
 
     @PostConstruct
     private void init(){
+
         categories = categoryService.findAll();
+        if(categories == null)
+            categories = new ArrayList<>();
     }
 
 
