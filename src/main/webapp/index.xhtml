@@ -29,6 +29,7 @@
                         Ogłoszenia
                         <p:inputText id="filter" value="#{adController.filter}"  />
                         <p:commandButton title="Wyszukaj"  action="#{adController.searchAds()}">
+                            <f:ajax render="clientTable"></f:ajax>
                         </p:commandButton>
                     </f:facet>
 
@@ -74,9 +75,9 @@
                         <p:outputLabel value="Opis" for="@next"/>
                         <p:inputText id="lastName" value="#{adController.editedAd.content}" required="true" />
                         <p:outputLabel value="Kategoria" for="@next"/>
-                        <h:selectOneMenu value="#{adController.id}" >
+                        <p:selectOneMenu value="#{adController.id}" >
                             <f:selectItems value="#{categoriesController.categories}" var ="c" itemValue="#{c.id}" itemLabel="#{c.name}" />
-                        </h:selectOneMenu>
+                        </p:selectOneMenu>
                     </h:panelGrid>
 
                     <p:commandButton value="Zapisz" action="#{adController.onSaveAd(userBean.login)}" process="@form" update=":mainForm" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('adDlg').hide()"  />

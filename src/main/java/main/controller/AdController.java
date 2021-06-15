@@ -156,7 +156,10 @@ public class AdController implements Serializable {
     }
 
     public void searchAds(){
-        displayedAds = ads;
+        displayedAds = new ArrayList<>();
+        ads.forEach(ad -> {
+            displayedAds.add(ad);
+        });
         List<Ad> tmpAds = new ArrayList<>();
         displayedAds.forEach((ad -> {
             if(!ad.getContent().contains(filter))
