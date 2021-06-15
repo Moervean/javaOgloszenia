@@ -32,12 +32,9 @@
                         Ogłoszenia
                         <p:inputText id="filter" value="#{adController.filter}"  />
                         <p:commandButton title="Wyszukaj"  action="#{adController.searchAds()}">
-                            <f:ajax render = "clientTable"></f:ajax>
                         </p:commandButton>
                     </f:facet>
 
-                    #{adController.ads}
-                    #{adController.displayedAds}
                     <p:column headerText="Użytkownik" >
                         #{ad.user.login}
                     </p:column>
