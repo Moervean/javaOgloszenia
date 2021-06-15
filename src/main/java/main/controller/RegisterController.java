@@ -55,6 +55,10 @@ public class RegisterController implements Serializable {
         if(userService.findByLogin(login) == null){
             userService.addUser(login,password,email);
             JSF.addInfoMessage("Użytkownik zarejestrowany poprawnie");
+
+            userBean.setLogin(login);
+            userBean.setRank(userService.findByLogin(login).getUserRank());
+
             JSF.redirect("index.xhtml");
         }else{
             JSF.addErrorMessage("Login zajęty");
