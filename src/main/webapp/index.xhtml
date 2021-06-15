@@ -20,7 +20,7 @@
         <ui:define name="content">
             <h:form id="mainForm">
                 <p:growl id="growl" showDetail="true" showSummary="false"  keepAlive=""   />
-                <p:dataTable id="clientTable" value="#{adController.ads}" var="ad"  rowKey="#{1}"
+                <p:dataTable id="clientTable" value="#{adController.displayedAds}" var="ad"  rowKey="#{1}"
                              emptyMessage="Brak ogłoszeń, dodaj ogłszenie"
                              paginator="true"
                              paginatorAlwaysVisible = "false"
@@ -30,9 +30,14 @@
                              rowsPerPageTemplate="10" >
                     <f:facet name="header">
                         Ogłoszenia
+                        <p:inputText id="filter" value="#{adController.filter}"  />
+                        <p:commandButton title="Wyszukaj"  action="#{adController.searchAds()}">
+                            <f:ajax render = "clientTable"></f:ajax>
+                        </p:commandButton>
                     </f:facet>
 
-
+                    #{adController.ads}
+                    #{adController.displayedAds}
                     <p:column headerText="Użytkownik" >
                         #{ad.user.login}
                     </p:column>
@@ -57,11 +62,13 @@
                             <p:confirm message="Czy chcesz usunąć ogłosenia ?" icon="pi pi-exclamation-triangle" />
                         </p:commandButton>
                     </p:column>
+
                     <f:facet name="footer">
                         <div style="text-align: left">
                             <p:commandButton icon="fa fa-fw fa-plus" title="Dodaj konto"  rendered="#{userBean.logged}" action="#{adController.onAddAd()}" process="@this" update=":adDlg" oncomplete="PF('adDlg').show()" />
                         </div>
                     </f:facet>
+
                 </p:dataTable>
             </h:form>
             <p:dialog id="adDlg" widgetVar="adDlg" dynamic="true" modal="true" header="Nowe ogłoszenie"  showEffect="fade" hideEffect="fade">

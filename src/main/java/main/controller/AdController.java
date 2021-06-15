@@ -2,6 +2,7 @@ package main.controller;
 
 import main.model.Ad;
 import main.service.AdService;
+import main.service.CategoryService;
 import main.service.UserService;
 
 import javax.annotation.PostConstruct;
@@ -26,6 +27,7 @@ public class AdController implements Serializable {
     private CategoryService categoryService;
 
     private List<Ad> ads ;
+    private List<Ad> displayedAds;
     private Ad editedAd;
     private Long id;
 
@@ -53,7 +55,20 @@ public class AdController implements Serializable {
         ads = adService.findAll();
         if(ads == null)
             ads = new ArrayList<>();
+        displayedAds = new ArrayList<>();
+        ads.forEach(ad -> {
+            displayedAds.add(ad);
+        });
     }
+
+    public List<Ad> getDisplayedAds() {
+        return displayedAds;
+    }
+
+    public void setDisplayedAds(List<Ad> displayedAds) {
+        this.displayedAds = displayedAds;
+    }
+
     public AdService getAdService() {
         return adService;
     }
@@ -104,12 +119,25 @@ public class AdController implements Serializable {
     public void onRemoveAd(Ad a){
         adService.delete(a.getId());
         ads.remove(a);
+        displayedAds.remove(a);
     }
 
     public void onCancelAd(){
         ads.replaceAll(a-> a != editedAd ? a : adService.findById(editedAd.getId()));
 
         editedAd = null;
+    }
+
+    public void searchAds(){
+        displayedAds = ads;
+        List<Ad> tmpAds = new ArrayList<>();
+        displayedAds.forEach((ad -> {
+            if(!ad.getContent().contains(filter))
+                tmpAds.add(ad);
+        }));
+        tmpAds.forEach(ad -> {
+            displayedAds.remove(ad);
+        });
     }
 
 
