@@ -31,21 +31,23 @@
                     <f:facet name="header">
                         Ogłoszenia
                     </f:facet>
+
+
                     <p:column headerText="Użytkownik" >
                         #{ad.user.login}
                     </p:column>
-                    <p:column headerText="Tytuł" >
+                    <p:column headerText="Tytuł">
                         <p:link value="#{ad.title}" outcome="/ad/singleAd" >
                             <f:param name = "title" value = "#{ad.title}"/>
                             <f:param name = "content" value = "#{ad.content}"/>
                         </p:link>
 
                     </p:column>
-                    <p:column headerText="Opis">
+                    <p:column headerText="Opis" >
                         #{ad.content}
                     </p:column>
                     <p:column headerText="Kategoria">
-                        #{ad.category}
+                        #{ad.category.name}
                     </p:column>
                     <p:column headerText="Edytuj" width="80" style="text-align: center;" rendered="#{userBean.admin}">
                         <p:commandButton icon="fa fa-fw fa-edit"  title="Edytuj" action="#{adController.onEditAd(ad)}" disabled="#{!userBean.logged}" process="@this" update=":adDlg" oncomplete="PF('adDlg').show()" />
@@ -70,8 +72,9 @@
                         <p:inputText id="firstName" value="#{adController.editedAd.title}" required="true" />
                         <p:outputLabel value="Opis" for="@next"/>
                         <p:inputText id="lastName" value="#{adController.editedAd.content}" required="true" />
-<!--                        <p:outputLabel value="Kategoria" for="@next"/>-->
-<!--                        <p:inputText id="category" value="#{adController.editedAd.category}" required="true" />-->
+                           <h:selectOneMenu value="#{adController.id}" >
+                            <f:selectItems value="#{categoriesController.categories}" var ="c" itemValue="#{c.id}" itemLabel="#{c.name}" />
+                        </h:selectOneMenu>
                     </h:panelGrid>
 
                     <p:commandButton value="Zapisz" action="#{adController.onSaveAd(userBean.login)}" process="@form" update=":mainForm" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('adDlg').hide()"  />
