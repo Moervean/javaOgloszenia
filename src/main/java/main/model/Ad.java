@@ -1,5 +1,7 @@
 package main.model;
 
+import main.service.MailService;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
@@ -22,7 +24,17 @@ public class Ad extends AbstractModel{
     }
 
     public void setAccepted(boolean accepted) {
-        this.accepted = accepted;
+
+        if(accepted!=this.accepted){
+            new Thread(() -> {
+                try {
+                    MailService mailService = new MailService();
+                    mailService.sendEmail(user.getEmail(), "Zmiana stanu ogloszenia", "Twoje ogloszenie zmieniło status");
+                }
+                catch (Exception e){}
+            }).start();
+       }
+       this.accepted = accepted;
     }
 
     public User getUser() {
