@@ -4,6 +4,7 @@ import main.model.Ad;
 import main.model.BlackWord;
 import main.service.AdService;
 import main.service.BlackWordService;
+import main.service.CategoryService;
 import main.service.UserService;
 import main.util.JSF;
 
@@ -27,14 +28,50 @@ public class AdController implements Serializable {
 
     @EJB
     private AdService adService;
+
+    @EJB
+    private CategoryService categoryService;
+
     private List<Ad> ads ;
+    private List<Ad> displayedAds;
     private Ad editedAd;
+    private Long id;
+
+    public String getFilter() {
+        return filter;
+    }
+
+    public void setFilter(String filter) {
+        this.filter = filter;
+    }
+
+    private String filter= "";
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     @PostConstruct
     private void init(){
         ads = adService.findActiveAds();
         if(ads == null)
             ads = new ArrayList<>();
+        displayedAds = new ArrayList<>();
+        ads.forEach(ad -> {
+            displayedAds.add(ad);
+        });
+    }
+
+    public List<Ad> getDisplayedAds() {
+        return displayedAds;
+    }
+
+    public void setDisplayedAds(List<Ad> displayedAds) {
+        this.displayedAds = displayedAds;
     }
 
     public AdService getAdService() {
@@ -93,7 +130,7 @@ public class AdController implements Serializable {
         }
 
         editedAd.setUser(userService.findByLogin(login));
-
+        editedAd.setCategory(categoryService.findById(id));
         if(editedAd.getId() == null){
             ads.add(editedAd);
         }
@@ -107,12 +144,25 @@ public class AdController implements Serializable {
     public void onRemoveAd(Ad a){
         adService.delete(a.getId());
         ads.remove(a);
+        displayedAds.remove(a);
     }
 
     public void onCancelAd(){
         ads.replaceAll(a-> a != editedAd ? a : adService.findById(editedAd.getId()));
 
         editedAd = null;
+    }
+
+    public void searchAds(){
+        displayedAds = ads;
+        List<Ad> tmpAds = new ArrayList<>();
+        displayedAds.forEach((ad -> {
+            if(!ad.getContent().contains(filter))
+                tmpAds.add(ad);
+        }));
+        tmpAds.forEach(ad -> {
+            displayedAds.remove(ad);
+        });
     }
 
 

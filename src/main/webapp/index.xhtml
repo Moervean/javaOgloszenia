@@ -17,7 +17,7 @@
         <ui:define name="content">
             <h:form id="mainForm">
                 <p:growl id="growl" showDetail="true" showSummary="false"  keepAlive=""   />
-                <p:dataTable id="clientTable" value="#{adController.ads}" var="ad"  rowKey="#{1}"
+                <p:dataTable id="clientTable" value="#{adController.displayedAds}" var="ad"  rowKey="#{1}"
                              emptyMessage="Brak ogłoszeń, dodaj ogłszenie"
                              paginator="true"
                              paginatorAlwaysVisible = "false"
@@ -27,22 +27,26 @@
                              rowsPerPageTemplate="10" >
                     <f:facet name="header">
                         Ogłoszenia
+                        <p:inputText id="filter" value="#{adController.filter}"  />
+                        <p:commandButton title="Wyszukaj"  action="#{adController.searchAds()}">
+                        </p:commandButton>
                     </f:facet>
+
                     <p:column headerText="Użytkownik" >
                         #{ad.user.login}
                     </p:column>
-                    <p:column headerText="Tytuł" >
+                    <p:column headerText="Tytuł">
                         <p:link value="#{ad.title}" outcome="/ad/singleAd" >
                             <f:param name = "title" value = "#{ad.title}"/>
                             <f:param name = "content" value = "#{ad.content}"/>
                         </p:link>
 
                     </p:column>
-                    <p:column headerText="Opis">
+                    <p:column headerText="Opis" >
                         #{ad.content}
                     </p:column>
                     <p:column headerText="Kategoria">
-                        #{ad.category}
+                        #{ad.category.name}
                     </p:column>
                     <p:column headerText="Edytuj" width="80" style="text-align: center;" rendered="#{userBean.admin}">
                         <p:commandButton icon="fa fa-fw fa-edit"  title="Edytuj" action="#{adController.onEditAd(ad)}" disabled="#{!userBean.logged}" process="@this" update=":adDlg" oncomplete="PF('adDlg').show()" />
@@ -52,11 +56,13 @@
                             <p:confirm message="Czy chcesz usunąć ogłosenia ?" icon="pi pi-exclamation-triangle" />
                         </p:commandButton>
                     </p:column>
+
                     <f:facet name="footer">
                         <div style="text-align: left">
                             <p:commandButton icon="fa fa-fw fa-plus" title="Dodaj konto"  rendered="#{userBean.logged}" action="#{adController.onAddAd()}" process="@this" update=":adDlg" oncomplete="PF('adDlg').show()" />
                         </div>
                     </f:facet>
+
                 </p:dataTable>
             </h:form>
             <p:dialog id="adDlg" widgetVar="adDlg" dynamic="true" modal="true" header="Nowe ogłoszenie"  showEffect="fade" hideEffect="fade">
@@ -67,8 +73,9 @@
                         <p:inputText id="firstName" value="#{adController.editedAd.title}" required="true" />
                         <p:outputLabel value="Opis" for="@next"/>
                         <p:inputText id="lastName" value="#{adController.editedAd.content}" required="true" />
-<!--                        <p:outputLabel value="Kategoria" for="@next"/>-->
-<!--                        <p:inputText id="category" value="#{adController.editedAd.category}" required="true" />-->
+                           <h:selectOneMenu value="#{adController.id}" >
+                            <f:selectItems value="#{categoriesController.categories}" var ="c" itemValue="#{c.id}" itemLabel="#{c.name}" />
+                        </h:selectOneMenu>
                     </h:panelGrid>
 
                     <p:commandButton value="Zapisz" action="#{adController.onSaveAd(userBean.login)}" process="@form" update=":mainForm" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('adDlg').hide()"  />
