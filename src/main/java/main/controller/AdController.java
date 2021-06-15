@@ -51,8 +51,7 @@ public class AdController implements Serializable {
 
     @PostConstruct
     private void init(){
-        //ads = adService.findActiveAds();
-        ads = adService.findAll();
+        ads = adService.findActiveAds();
         if(ads == null)
             ads = new ArrayList<>();
         displayedAds = new ArrayList<>();
