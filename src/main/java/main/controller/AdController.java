@@ -1,8 +1,11 @@
 package main.controller;
 
 import main.model.Ad;
+import main.model.BlackWord;
 import main.service.AdService;
+import main.service.BlackWordService;
 import main.service.UserService;
+import main.util.JSF;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -18,6 +21,9 @@ public class AdController implements Serializable {
 
     @EJB
     private UserService userService;
+
+    @EJB
+    private BlackWordService blackWordService;
 
     @EJB
     private AdService adService;
@@ -65,7 +71,27 @@ public class AdController implements Serializable {
         editedAd = a;
     }
 
-    public void onSaveAd(String login){
+    private boolean hasBlackWords(String text) {
+        List<BlackWord> blackWords = blackWordService.findAll();
+
+        if (blackWords.isEmpty() || text == null || text.isEmpty())
+            return false;
+
+        for (BlackWord word : blackWordService.findAll()) {
+            if (text.contains(word.getWord()))
+                return true;
+        }
+        return false;
+    }
+
+    public void onSaveAd(String login) {
+
+        if (hasBlackWords(editedAd.getTitle()) || hasBlackWords(editedAd.getContent())) {
+            editedAd = null;
+            JSF.addErrorMessage("Ogłoszenie zawiera zabronione słowa");
+            return;
+        }
+
         editedAd.setUser(userService.findByLogin(login));
 
         if(editedAd.getId() == null){
