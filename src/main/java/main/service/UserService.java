@@ -5,10 +5,18 @@
  */
 package main.service;
 
+import main.model.Category;
 import main.model.User;
 
+import java.util.List;
+
 public interface UserService {
-    public User findByLogin(String login);
-    public boolean verify(String login, String password);
+    User findById(Long id);
+    User findByLogin(String login);
+    boolean verify(String login, String password);
     void addUser(String login,String password,String email);
+    User save(User user);
+    void delete(Long id);
+    List<User> findAll();
+
 }
