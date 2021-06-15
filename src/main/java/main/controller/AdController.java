@@ -139,6 +139,8 @@ public class AdController implements Serializable {
         ads.replaceAll(a-> a != editedAd ? a : saved);
         init();
         editedAd = null;
+
+        JSF.addInfoMessage("Ogłoszenie czeka na akceptację moderatora.");
     }
 
     public void onRemoveAd(Ad a){
