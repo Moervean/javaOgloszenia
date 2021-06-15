@@ -1,20 +1,20 @@
 package main.controller;
 
-import main.model.Ad;
-import main.service.AdService;
-import main.service.UserService;
+        import main.model.Ad;
+        import main.service.AdService;
+        import main.service.UserService;
 
-import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+        import javax.annotation.PostConstruct;
+        import javax.ejb.EJB;
+        import javax.faces.view.ViewScoped;
+        import javax.inject.Named;
+        import java.io.Serializable;
+        import java.util.ArrayList;
+        import java.util.List;
 
 @Named
 @ViewScoped
-public class AdController implements Serializable {
+public class ModAdController implements Serializable {
 
     @EJB
     private UserService userService;
@@ -26,8 +26,8 @@ public class AdController implements Serializable {
 
     @PostConstruct
     private void init(){
-        //ads = adService.findActiveAds();
-        ads = adService.findAll();
+        ads = adService.findInactiveAds();
+        //ads = adService.findAll();
         if(ads == null)
             ads = new ArrayList<>();
     }
@@ -65,16 +65,14 @@ public class AdController implements Serializable {
         editedAd = a;
     }
 
-    public void onSaveAd(String login){
-        editedAd.setUser(userService.findByLogin(login));
-
+    public void onSaveAd(){
         if(editedAd.getId() == null){
             ads.add(editedAd);
         }
 
         Ad saved = adService.save(editedAd);
         ads.replaceAll(a-> a != editedAd ? a : saved);
-        init();
+
         editedAd = null;
     }
 

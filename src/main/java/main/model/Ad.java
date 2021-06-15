@@ -21,7 +21,7 @@ public class Ad extends AbstractModel{
         return accepted;
     }
 
-    public void setAccepted(boolean isAccepted) {
+    public void setAccepted(boolean accepted) {
         this.accepted = accepted;
     }
 
