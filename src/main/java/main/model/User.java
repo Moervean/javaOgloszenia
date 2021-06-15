@@ -14,8 +14,6 @@ public class User extends AbstractModel {
     @Column(unique = true)
     private String email;
     private UserRank userRank;
-    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<UserGroup> userGroups = new LinkedList<>();
 
     @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Ad> accountOperations = new LinkedList<Ad>();
@@ -76,24 +74,6 @@ public class User extends AbstractModel {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public void setUserGroups(List<UserGroup> userGroups) {
-        this.userGroups = userGroups;
-    }
-
-    public List<UserGroup> getUserGroups() {
-        return userGroups;
-    }
-
-    public void addGroup(String name) {
-        // sprawdzic czy już nie jest dodana
-        for (UserGroup us : userGroups) {
-            if (us.getName().equals(name)) {
-                throw new IllegalArgumentException();
-            }
-        }
-        userGroups.add(new UserGroup(name,this));
     }
 
     @Override

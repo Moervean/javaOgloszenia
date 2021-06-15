@@ -1,7 +1,6 @@
 package main.controller.admin;
 
 import main.model.User;
-import main.model.UserGroup;
 import main.model.UserRank;
 import main.service.UserService;
 
@@ -11,9 +10,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Named
 @ViewScoped
