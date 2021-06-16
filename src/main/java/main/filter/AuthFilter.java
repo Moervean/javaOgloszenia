@@ -40,6 +40,18 @@ public class AuthFilter implements Filter {
                 return;
             }
         }
+        if(path.startsWith("/mod/")){
+            if (!userBean.isLogged()) {
+                HttpServletResponse response = (HttpServletResponse) servletResponse;
+                response.sendRedirect(request.getContextPath()+"/login.xhtml");
+                return;
+            }
+            if(!userBean.isMod()){
+                HttpServletResponse response = (HttpServletResponse) servletResponse;
+                response.sendRedirect(request.getContextPath()+"/index.xhtml");
+                return;
+            }
+        }
         filterChain.doFilter(servletRequest,servletResponse);
     }
     @Override

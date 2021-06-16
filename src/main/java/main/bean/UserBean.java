@@ -41,6 +41,9 @@ public class UserBean implements Serializable {
     }
 
     public boolean isMod(){
+        if(rank == null){
+            return false;
+        }
         return rank.equals(UserRank.MOD);
     }
 
