@@ -10,10 +10,14 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Named
 @ViewScoped
 public class CategoriesController implements Serializable {
+
+    private final static Logger log = Logger.getLogger(CategoriesController.class.getName());
+
     @EJB
     private CategoryService categoryService;
     private List<Category> categories ;
@@ -64,6 +68,7 @@ public class CategoriesController implements Serializable {
     public void onSaveCategory(){
         if(editedCategory.getId() == null){
             categories.add(editedCategory);
+            log.info("Kategoria dodane");
         }
 
         Category saved = categoryService.save(editedCategory);
@@ -73,11 +78,13 @@ public class CategoriesController implements Serializable {
     }
 
     public void onRemoveCategory(Category category){
+        log.info("Kategoria usunięta");
         categoryService.delete(category.getId());
         categories.remove(category);
     }
 
     public void onCancelCategory(){
+        log.info("Edycja kategorii przerwana");
         categories.replaceAll(a-> a != editedCategory ? a : categoryService.findById(editedCategory.getId()));
 
         editedCategory = null;

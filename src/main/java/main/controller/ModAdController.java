@@ -11,11 +11,14 @@ package main.controller;
         import java.io.Serializable;
         import java.util.ArrayList;
         import java.util.List;
+        import java.util.logging.Logger;
 
 @Named
 @ViewScoped
 public class ModAdController implements Serializable {
 
+
+    private final static Logger log = Logger.getLogger(ModAdController.class.getName());
     @EJB
     private UserService userService;
 
@@ -66,6 +69,7 @@ public class ModAdController implements Serializable {
     }
 
     public void onSaveAd(){
+        log.info("Ogłoszenie zapisanie");
         if(editedAd.getId() == null){
             ads.add(editedAd);
         }
@@ -77,11 +81,13 @@ public class ModAdController implements Serializable {
     }
 
     public void onRemoveAd(Ad a){
+        log.info("Ogłoszenie usunięte");
         adService.delete(a.getId());
         ads.remove(a);
     }
 
     public void onCancelAd(){
+        log.info("Edycja przerwana");
         ads.replaceAll(a-> a != editedAd ? a : adService.findById(editedAd.getId()));
 
         editedAd = null;

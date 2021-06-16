@@ -10,10 +10,13 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Named
 @ViewScoped
 public class AdminAdController implements Serializable {
+
+    private final static Logger log = Logger.getLogger(BlackWordController.class.getName());
 
     @EJB
     private AdService adService;
@@ -64,6 +67,7 @@ public class AdminAdController implements Serializable {
     public void onSaveAd(){
         if(editedAd.getId() == null){
             ads.add(editedAd);
+            log.info("Ogłoszenie zapisane");
         }
 
         Ad saved = adService.save(editedAd);
@@ -73,11 +77,13 @@ public class AdminAdController implements Serializable {
     }
 
     public void onRemoveAd(Ad a){
+        log.info("Ogłoszenie usunięte");
         adService.delete(a.getId());
         ads.remove(a);
     }
 
     public void onCancelAd(){
+        log.info("Edycja ogłoszenia przerwana");
         ads.replaceAll(a-> a != editedAd ? a : adService.findById(editedAd.getId()));
 
         editedAd = null;

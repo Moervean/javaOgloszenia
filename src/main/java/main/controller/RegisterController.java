@@ -11,10 +11,13 @@ import javax.inject.Named;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.logging.Logger;
 
 @Named
 @ViewScoped
 public class RegisterController implements Serializable {
+
+    private final static Logger log = Logger.getLogger(RegisterController.class.getName());
 
     @Inject
     private UserBean userBean;
@@ -52,15 +55,17 @@ public class RegisterController implements Serializable {
 
 
     public void onRegister() throws IOException, ServletException {
+
         if(userService.findByLogin(login) == null){
             userService.addUser(login,password,email);
             JSF.addInfoMessage("Użytkownik zarejestrowany poprawnie");
 
             userBean.setLogin(login);
             userBean.setRank(userService.findByLogin(login).getUserRank());
-
+            log.info("Zarejestrowano");
             JSF.redirect("index.xhtml");
         }else{
+            log.warning("Login zajęty");
             JSF.addErrorMessage("Login zajęty");
         }
     }

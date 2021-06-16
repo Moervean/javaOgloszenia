@@ -12,10 +12,14 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Named
 @ViewScoped
 public class BlackWordController implements Serializable {
+
+    private final static Logger log = Logger.getLogger(BlackWordController.class.getName());
+
     @EJB
     private BlackWordService blackWordService;
     private List<BlackWord> blackWords ;
@@ -63,6 +67,7 @@ public class BlackWordController implements Serializable {
     public void onSaveAd(){
         if(editedBlackWord.getId() == null){
             blackWords.add(editedBlackWord);
+            log.info("Zakazane slowo dodane");
         }
 
         BlackWord saved = blackWordService.save(editedBlackWord);
@@ -72,11 +77,13 @@ public class BlackWordController implements Serializable {
     }
 
     public void onRemoveAd(BlackWord a){
+        log.info("Zakazane słowo usuniete");
         blackWordService.delete(a.getId());
         blackWords.remove(a);
     }
 
     public void onCancelAd(){
+        log.info("Edycja zakazanego słowa przerwana");
         blackWords.replaceAll(a-> a != editedBlackWord ? a : blackWordService.findById(editedBlackWord.getId()));
 
         editedBlackWord = null;

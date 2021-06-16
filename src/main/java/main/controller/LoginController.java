@@ -16,10 +16,13 @@ import javax.inject.Named;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.logging.Logger;
 
 @Named
 @ViewScoped
 public class LoginController implements Serializable {
+
+    private final static Logger log = Logger.getLogger(LoginController.class.getName());
 
     @Inject
     private UserBean userBean;
@@ -48,9 +51,11 @@ public class LoginController implements Serializable {
 
     // akcja logowania
     public void onLogin() throws IOException, ServletException {
+
         if (userService.verify(login, password)) {
             userBean.setLogin(login);
             userBean.setRank(userService.findByLogin(login).getUserRank());
+            log.info("Zalogowano");
             JSF.redirect("index.xhtml");
         } else {
             JSF.addErrorMessage("Niepoprawne dane");
@@ -58,6 +63,7 @@ public class LoginController implements Serializable {
     }
     // akcja wylogowania
     public void onLogout() throws IOException {
+        log.info("Wylogowano");
         JSF.invalidateSession();
         JSF.redirect("index.xhtml");
     }

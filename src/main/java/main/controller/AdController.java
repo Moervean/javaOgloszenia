@@ -15,10 +15,13 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Named
 @ViewScoped
 public class AdController implements Serializable {
+
+    private final static Logger log = Logger.getLogger(LoginController.class.getName());
 
     @EJB
     private UserService userService;
@@ -109,6 +112,7 @@ public class AdController implements Serializable {
     }
 
     private boolean hasBlackWords(String text) {
+        log.warning("Dodane ogłoszenie zawiera słowa z czarnej listy");
         List<BlackWord> blackWords = blackWordService.findAll();
 
         if (blackWords.isEmpty() || text == null || text.isEmpty())
@@ -123,6 +127,7 @@ public class AdController implements Serializable {
 
     public void onSaveAd(String login) {
 
+        log.info("Ogłoszenie dodane");
         if (hasBlackWords(editedAd.getTitle()) || hasBlackWords(editedAd.getContent())) {
             editedAd = null;
             JSF.addErrorMessage("Ogłoszenie zawiera zabronione słowa");
@@ -144,12 +149,14 @@ public class AdController implements Serializable {
     }
 
     public void onRemoveAd(Ad a){
+        log.info("Ogłoszenie usnunięte");
         adService.delete(a.getId());
         ads.remove(a);
         displayedAds.remove(a);
     }
 
     public void onCancelAd(){
+        log.info("Edycja przerwana");
         ads.replaceAll(a-> a != editedAd ? a : adService.findById(editedAd.getId()));
 
         editedAd = null;

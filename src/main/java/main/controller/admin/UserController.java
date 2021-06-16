@@ -1,5 +1,6 @@
 package main.controller.admin;
 
+import main.controller.ModAdController;
 import main.model.User;
 import main.model.UserRank;
 import main.service.UserService;
@@ -11,10 +12,13 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Named
 @ViewScoped
 public class UserController implements Serializable {
+
+    private final static Logger log = Logger.getLogger(UserController.class.getName());
     @EJB
     private UserService userService;
     private List<User> users;
@@ -67,6 +71,7 @@ public class UserController implements Serializable {
     }
 
     public void onRemoveUser(User user) {
+        log.info("Uzytkownik usunięty");
         userService.delete(user.getId());
         users.remove(user);
     }
@@ -74,6 +79,7 @@ public class UserController implements Serializable {
     public void onSaveUser(){
         if(editedUser.getId() == null){
             users.add(editedUser);
+            log.info("Uzytkownik dodany");
         }
 
         User saved = userService.save(editedUser);
@@ -83,6 +89,7 @@ public class UserController implements Serializable {
     }
 
     public void onCancelUser(){
+        log.info("Edycja użytkownika przerwana");
         users.replaceAll(a-> a != editedUser ? a : userService.findById(editedUser.getId()));
 
         editedUser = null;
