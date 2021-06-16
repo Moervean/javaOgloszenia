@@ -19,12 +19,6 @@
         </ui:define>
 
         <ui:define name="content">
-
-            <h1>Admin panel</h1>
-
-        </ui:define>
-
-        <ui:define name="content">
             <h:form id="mainForm">
                 <p:growl id="growl" showDetail="true" showSummary="false"  keepAlive=""   />
                 <p:dataTable id="clientTable" value="#{adminAdController.ads}" var="ad"  rowKey="#{1}"
@@ -45,7 +39,7 @@
                         #{ad.content}
                     </p:column>
                     <p:column headerText="Status">
-                        #{ad.isAccepted}
+                        #{ad.accepted}
                     </p:column>
                     <p:column headerText="Edytuj" width="80" style="text-align: center;">
                         <p:commandButton icon="fa fa-fw fa-edit"  title="Edytuj" action="#{adminAdController.onEditAd(ad)}" disabled="#{!userBean.logged}" process="@this" update=":adDlg" oncomplete="PF('adDlg').show()" />
@@ -67,7 +61,7 @@
                         <p:outputLabel value="Opis" for="@next"/>
                         <p:inputText id="lastName" value="#{adminAdController.editedAd.content}" required="true" />
                         <p:outputLabel value="Status" for="@next"/>
-                        <p:inputSwitch id="state" value="#{adminAdController.editedAd.isAccepted}"/>
+                        <p:inputSwitch id="state" value="#{adminAdController.editedAd.accepted}"/>
                     </h:panelGrid>
 
                     <p:commandButton value="Zapisz" action="#{adminAdController.onSaveAd()}" process="@form" update=":mainForm" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('adDlg').hide()"  />
