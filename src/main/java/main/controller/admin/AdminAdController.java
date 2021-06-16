@@ -22,7 +22,7 @@ public class AdminAdController implements Serializable {
 
     @PostConstruct
     private void init(){
-        ads = adService.findInactiveAds();
+        ads = adService.findAll();
         if(ads == null)
             ads = new ArrayList<>();
     }
